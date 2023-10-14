@@ -43,7 +43,7 @@ def fibonacci(a: float, b: float, epsilon: float, func):
     return c_list[i + 1]
 
 
-def LG(ap: float, bp: float, cp: float, epsilon: float, N: int, f):
+def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, f):
     a = [ap]
     b = [bp]
     c = [cp]
@@ -79,6 +79,6 @@ def LG(ap: float, bp: float, cp: float, epsilon: float, N: int, f):
 
         if i > N:
             raise ValueError("Nmax has been exceeded")
-        if b[i] - a[i]<epsilon or abs(d[i]-d[i-i]):
+        if b[i] - a[i]<epsilon or abs(d[i]-d[i-i]) > gamma:
             break
     return d[i]
