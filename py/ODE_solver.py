@@ -4,15 +4,15 @@ from scipy.integrate import *
 '''
 Tank A
 '''
-TA0 = 90            # Temperature in tank A
-VA0 = 5             # Volume at t = 0
+TA0 = 90.0            # Temperature in tank A
+VA0 = 5.0             # Volume at t = 0
 PA = 0.7            # Base area
 
 '''
 Tank B
 '''
-TB0 = 10            # Temperature at t = 0
-VB0 = 1             # Volume at t = 0
+TB0 = 10.0            # Temperature at t = 0
+VB0 = 1.0             # Volume at t = 0
 PB = 1.0            # Base area
 DB = 0.00365665     # Drain gauge
 
@@ -20,7 +20,7 @@ DB = 0.00365665     # Drain gauge
 Water source
 '''
 FBin = 0.01         # Water flow velocity
-TBin = 10           # Water temperature
+TBin = 10.0           # Water temperature
 
 
 '''
