@@ -1,28 +1,35 @@
-def ekspansja(x0: float, d: float, alpha: float, nmax: int, func):
+from fun import *
+def ekspansja(x0: float, d: float, alpha: float, nmax: int, fun:funclass):
     i = 0
     x_list = [x0, x0 + d]
+    func = fun.f1
+    fcalls = fun.fcalls
+    zerocalls = fun.zerocalls
     if func(x_list[0]) == func(x_list[1]):
-        return x_list[0], x_list[1]
+        return x_list[0], x_list[1],fcalls()
     if func(x_list[1]) > func(x_list[0]):
         d = -d
         x_list[1] = x_list[0] + d
         if func(x_list[1]) >= func(x_list[0]):
-            return x_list[1], x_list[0] - d
+            return x_list[1], x_list[0] - d,fcalls()
     while True:
-        if i > nmax:
+        if fcalls() > nmax:
             raise ValueError("Nmax has been exceeded")
         i += 1
         x_list.append(x_list[0] + alpha ** i * d)
         if func(x_list[i]) <= func(x_list[i + 1]):
             break
+    pom = fcalls()
+    zerocalls()
     if (d > 0):
-        return x_list[i - 1], x_list[i + 1]
-    return x_list[i + 1], x_list[i - 1]
+        return x_list[i - 1], x_list[i + 1],pom
+    return x_list[i + 1], x_list[i - 1],pom
 
 
-def fibonacci(a: float, b: float, epsilon: float, func):
+def fibonacci(a: float, b: float, epsilon: float, fun):
     fib_seq = [0, 1]
     k = 1
+    func = fun.f1
     while fib_seq[k] < (b - a) / epsilon:
         fib_seq.append(fib_seq[-2] + fib_seq[-1])
         k += 1
@@ -43,7 +50,10 @@ def fibonacci(a: float, b: float, epsilon: float, func):
     return c_list[i + 1]
 
 
-def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, f):
+def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, fun):
+    f = fun.f1
+    fcalls = fun.fcalls
+    zerocalls = fun.zerocalls
     a = [ap]
     b = [bp]
     c = [cp]
@@ -77,8 +87,10 @@ def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, f)
             else:
                 raise ValueError("error")
 
-        if i > N:
+        if fcalls() > N:
             raise ValueError("Nmax has been exceeded")
         if b[i] - a[i]<epsilon or abs(d[i]-d[i-i]) > gamma:
             break
-    return d[i]
+    pom = fcalls()
+    zerocalls()
+    return d[i], pom
