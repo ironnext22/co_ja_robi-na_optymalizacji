@@ -11,7 +11,7 @@ def ekspansja(x0: float, d: float, alpha: float, nmax: int, fun:funclass):
         d = -d
         x_list[1] = x_list[0] + d
         if func(x_list[1]) >= func(x_list[0]):
-            return x_list[1], x_list[0] - d,fcalls()
+            return x_list[1], x_list[0] - d, fcalls()
     while True:
         if fcalls() > nmax:
             raise ValueError("Nmax has been exceeded")
@@ -22,11 +22,11 @@ def ekspansja(x0: float, d: float, alpha: float, nmax: int, fun:funclass):
     pom = fcalls()
     zerocalls()
     if (d > 0):
-        return x_list[i - 1], x_list[i + 1],pom
-    return x_list[i + 1], x_list[i - 1],pom
+        return x_list[i - 1], x_list[i + 1], pom
+    return x_list[i + 1], x_list[i - 1], pom
 
 
-def fibonacci(a: float, b: float, epsilon: float, fun):
+def fibonacci(a: float, b: float, epsilon: float, fun: funclass):
     fib_seq = [0, 1]
     k = 1
     func = fun.f1
@@ -47,7 +47,9 @@ def fibonacci(a: float, b: float, epsilon: float, fun):
             a_list.append(c_list[i])
         c_list.append(b_list[i + 1] - fib_seq[k - i - 2] / fib_seq[k - i - 1] * (b_list[i + 1] - a_list[i + 1]))
         d_list.append(a_list[i + 1] + b_list[i + 1] - c_list[i + 1])
-    return c_list[i + 1]
+    aux = fun.fcalls()
+    fun.zerocalls()
+    return c_list[i + 1], aux
 
 
 def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, fun):
@@ -62,11 +64,12 @@ def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, fu
     for i in range(N):
         l = f(a[i])*((b[i])**2 - (c[i])**2)+f(b[i])*((c[i])**2-(a[i])**2)+f(c[i])*((a[i])**2-(b[i])**2)
         m = f(a[i])*(b[i]-c[i])+f(b[i])*(c[i]-a[i])+f(c[i])*(a[i]-b[i])
-        if m<=0:
-            raise ValueError("M value error")
+        if m <= 0:
+            return 'M error', 'M error'
+            # raise ValueError("M value error")
         d.append(0.5*l/m)
-        if a[i]<d[i]<c[i]:
-            if f(d[i])<f(c[i]):
+        if a[i] < d[i] < c[i]:
+            if f(d[i]) < f(c[i]):
                 a.append(a[i])
                 c.append(d[i])
                 b.append(c[i])
@@ -75,8 +78,8 @@ def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, fu
                 c.append(c[i])
                 b.append(b[i])
         else:
-            if c[i]<d[i]<b[i]:
-                if f(d[i])<f(c[i]):
+            if c[i] < d[i] < b[i]:
+                if f(d[i]) < f(c[i]):
                     a.append(c[i])
                     c.append(d[i])
                     b.append(b[i])
@@ -85,12 +88,14 @@ def LG(ap: float, bp: float, cp: float, epsilon: float, gamma: float, N: int, fu
                     c.append(c[i])
                     b.append(d[i])
             else:
-                raise ValueError("error")
+                return 'error', 'error'
+                #raise ValueError("error")
 
         if fcalls() > N:
-            raise ValueError("Nmax has been exceeded")
-        if b[i] - a[i]<epsilon or abs(d[i]-d[i-i]) > gamma:
+            return 'N error', 'N error'
+            #raise ValueError("Nmax has been exceeded")
+        if b[i] - a[i] < epsilon or abs(d[i]-d[i-1]) > gamma:
             break
-    pom = fcalls()
+    aux = fcalls()
     zerocalls()
-    return d[i], pom
+    return d[i], aux
